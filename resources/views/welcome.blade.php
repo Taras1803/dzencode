@@ -121,25 +121,25 @@
             <div class="form__group">
                 <label for="comment_username" class="label">Your name *</label>
                 <div class="form__hold">
-                    <input type="text" id="name" name="name" maxlength="30" class="field" placeholder="please enter name to make your comment personalized"/>
+                    <input type="text" id="name" required name="name" maxlength="30" class="field" placeholder="please enter name to make your comment personalized"/>
                 </div>
             </div>
             <div class="form__group">
                 <label for="email" class="label">Your email *</label>
                 <div class="form__hold">
-                    <input type="text" id="email" name="email" maxlength="30" class="field" placeholder="please enter email"/>
+                    <input type="email" id="email" required name="email" maxlength="30" class="field" placeholder="please enter email"/>
                 </div>
             </div>
             <div class="form__group">
                 <label for="home_url" class="label">Your home page</label>
                 <div class="form__hold">
-                    <input type="text" id="home_url" name="home_url" maxlength="30" class="field" placeholder="please enter your home page"/>
+                    <input type="url" id="home_url" name="home_url" maxlength="30" class="field" placeholder="please enter your home page"/>
                 </div>
             </div>
             <div class="form__group">
                 <label for="comment_message" class="label">Comment message:</label>
                 <div class="form__hold">
-                    <textarea id="comment_message" name="comment" class="field field--area" placeholder="Add your comment"></textarea>
+                    <textarea id="comment_message" required name="comment" class="field field--area" placeholder="Add your comment"></textarea>
                     <div class="validate validate--error"></div>
                 </div>
             </div>
