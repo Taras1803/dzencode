@@ -58,7 +58,7 @@
                                 <div class="comment__content">
                                     <div class="comment__header">
                                         <span class="comment__user">{{$comment->user_name}}</span>
-                                        <span class="comment__time">{{$comment::get_time_passed($comment->created_at)}} ago</span>
+                                        <span class="comment__time">{{\App\Helper::get_time_passed($comment->created_at)}} ago</span>
                                         <span class="comment__time comment__time_reply scrollable" style="cursor: pointer">
                                             <svg class="icon icon--reply">
                                                 <use xlink:href="#reply"></use>
@@ -85,7 +85,7 @@
                                                     <div class="comment__content">
                                                         <div class="comment__header">
                                                             <span class="comment__user_child">{{$comment_child->user_name}}</span>
-                                                            <span class="comment__time">{{$comment_child::get_time_passed($comment_child->created_at)}} ago</span>
+                                                            <span class="comment__time">{{\App\Helper::get_time_passed($comment_child->created_at)}} ago</span>
                                                         </div>
                                                         <div class="comment__body">
                                                             <p>&laquo;{{$comment_child['comment']}}&raquo;</p>
@@ -115,15 +115,15 @@
         <form class="comments__form form" method="post" style="margin-top: 20px;" action="addComment">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <input type="hidden" name="action" value="add_comment"/>
-            <input type="hidden" name="comment_parent_id" value="0"/>
+            <input type="hidden" name="parent_id" value="0"/>
             <div class="message-success is-hidden">
                 Thank you! Your comment has been submitted for review.
             </div>
             <div class="message-error is-hidden"></div>
             <div class="form__group">
-                <label for="comment_username" class="label">Your name *</label>
+                <label for="user_name" class="label">Your name *</label>
                 <div class="form__hold">
-                    <input type="text" id="name" @auth value="{{ Auth::user()->name }}" @endauth required name="name" maxlength="30" class="field" placeholder="please enter name to make your comment personalized"/>
+                    <input type="text" id="user_name" @auth value="{{ Auth::user()->name }}" @endauth required name="user_name" maxlength="30" class="field" placeholder="please enter name to make your comment personalized"/>
                 </div>
             </div>
             <div class="form__group">
@@ -133,9 +133,9 @@
                 </div>
             </div>
             <div class="form__group">
-                <label for="home_url" class="label">Your home page</label>
+                <label for="page_url" class="label">Your home page</label>
                 <div class="form__hold">
-                    <input type="url" id="home_url" name="home_url" maxlength="30" class="field" placeholder="please enter your home page"/>
+                    <input type="url" id="page_url" name="page_url" maxlength="30" class="field" placeholder="please enter your home page"/>
                 </div>
             </div>
             <div class="form__group">

@@ -17,6 +17,8 @@ class CommentController extends Controller
 
     public function addComment(Request $request)
     {
-        dd($request->action);
+        Comment::add($request);
+        return back();
     }
+
 }

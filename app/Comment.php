@@ -8,8 +8,7 @@
 
 namespace App;
 
-use DateTime;
-use DateTimeZone;
+use Composer\DependencyResolver\Request;
 use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
@@ -29,47 +28,27 @@ class Comment extends Model
         return $comments;
     }
 
-    static function get_time_passed($date)
+
+
+    static function add($request)
     {
-        $date = new DateTime($date, new DateTimeZone('Europe/Kiev'));
-        $interval = time() - $date->getTimestamp();
+//        dd($request);
 
-        if ($interval < 0) {
-            $interval = 0;
+        $comment = new Comment;
+        $comment->user_name = $request->user_name;
+        $comment->email = $request->email;
+        $comment->comment = $request->comment;
+        $comment->ip = $_SERVER['REMOTE_ADDR'];
+        $comment->agent = Helper::getUserAgent();
+        if($request->parent_id != 0){
+            $comment->parent_id = $request->parent_id;
         }
-        if ($interval < 60) {
-            $range = $interval . " seconds";
-        } else {
-            $temp_interval = floor($interval / 60);
-            if ($temp_interval < 60) {
-                $range = $temp_interval . " minutes";
-            } else {
-                $temp_interval = floor($interval / (60 * 60));
-                if ($temp_interval < 24) {
-                    $range = $temp_interval . " hours";
-                } else {
-                    $temp_interval = floor($interval / (60 * 60 * 24));
-                    if ($temp_interval < 7) {
-                        $range = $temp_interval . " days";
-                    } else {
-                        $temp_interval = floor($interval / (60 * 60 * 24 * 7));
-                        if ($temp_interval < 5) {
-                            $range = $temp_interval . " weeks";
-
-                        } else {
-                            $temp_interval = floor($interval / (60 * 60 * 24 * 30));
-                            if ($temp_interval < 12) {
-                                $range = $temp_interval . " months";
-                            } else {
-                                $temp_interval = floor($interval / (60 * 60 * 24 * 365));
-                                $range = $temp_interval . " years";
-                            }
-                        }
-                    }
-                }
-            }
+        $comment->page_url= $request->page_url;
+        if (\Auth::check()) {
+            $comment->user_id = \Auth::id();
+        }else{
+            $comment->user_id = 0;
         }
-        return $range;
+        $comment->save();
     }
-
 }
