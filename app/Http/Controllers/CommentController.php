@@ -14,4 +14,9 @@ class CommentController extends Controller
         $count = count($comments);
         return view('welcome', compact('comments', 'count'));
     }
+
+    public function addComment(Request $request)
+    {
+        dd($request->action);
+    }
 }

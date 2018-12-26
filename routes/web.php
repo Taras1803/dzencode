@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'CommentController@index');
+Route::post('addComment', 'CommentController@addComment');
 
 Auth::routes();
 

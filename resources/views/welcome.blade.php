@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Laravel</title>
     <!-- Fonts -->
@@ -111,7 +112,8 @@
                 }, 1000);
             })
         </script>
-        <form class="comments__form form" method="post" style="margin-top: 20px;">
+        <form class="comments__form form" method="post" style="margin-top: 20px;" action="addComment">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <input type="hidden" name="action" value="add_comment"/>
             <input type="hidden" name="comment_parent_id" value="0"/>
             <div class="message-success is-hidden">
@@ -121,13 +123,13 @@
             <div class="form__group">
                 <label for="comment_username" class="label">Your name *</label>
                 <div class="form__hold">
-                    <input type="text" id="name" required name="name" maxlength="30" class="field" placeholder="please enter name to make your comment personalized"/>
+                    <input type="text" id="name" @auth value="{{ Auth::user()->name }}" @endauth required name="name" maxlength="30" class="field" placeholder="please enter name to make your comment personalized"/>
                 </div>
             </div>
             <div class="form__group">
                 <label for="email" class="label">Your email *</label>
                 <div class="form__hold">
-                    <input type="email" id="email" required name="email" maxlength="30" class="field" placeholder="please enter email"/>
+                    <input type="email" id="email" @auth value="{{ Auth::user()->email }}" @endauth required name="email" maxlength="30" class="field" placeholder="please enter email"/>
                 </div>
             </div>
             <div class="form__group">
