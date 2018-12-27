@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="{{asset('css/main.css')}}" type="text/css">
     <!--jQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <!--scripts-->
+    <script src="{{asset('js/main.js')}}" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
 
@@ -46,10 +48,10 @@
                 </strong>
             </div>
             <div id="video_comments_video_comments">
-                <ul class="comments__list js-list-comments">
+                <ul class="comments__list js-list-comments parent_block">
                     @foreach($comments as $comment)
-                        <li class="comments__item js-item" data-comment-id="{{ $comment->id }}">
-                            <div class="comment">
+                        <li class="comments__item js-item" data-comment-id="{{ $comment->id }}" id="parent_block_{{ $comment->id }}">
+                            <div class="comment parent_item">
                                 <div class="comment__avatar">
                                     <div class="avatar avatar--user">
                                         <img src="/images/default.jpg">
@@ -66,17 +68,16 @@
                                         </span>
                                     </div>
                                     <div class="comment__body">
-                                        <p>&laquo;{{$comment->comment}}&raquo;</p>
+                                        <p class="comment_text">&laquo;{{$comment->comment}}&raquo;</p>
                                     </div>
                                 </div>
                             </div>
                             @if ($comment->children)
                                 <div class="children_comments">
-                                    <ul class="comments__list js-list-comments"
+                                    <ul class="comments__list js-list-comments child_block" id="child_block_{{ $comment->id }}">
                                         @foreach($comment->children as $comment_child)
-                                            id="video_comments_video_comments_items">
-                                            <li class="comments__item js-item" data-comment-id="{{$comment_child->id}}">
-                                                <div class="comment">
+                                            <li class="comments__item js-item">
+                                                <div class="comment child_item">
                                                     <div class="comment__avatar">
                                                         <div class="avatar avatar--user">
                                                             <img src="/images/default_child.jpg">
@@ -88,7 +89,7 @@
                                                             <span class="comment__time">{{\App\Helper::get_time_passed($comment_child->created_at)}} ago</span>
                                                         </div>
                                                         <div class="comment__body">
-                                                            <p>&laquo;{{$comment_child['comment']}}&raquo;</p>
+                                                            <p>&laquo;{{$comment_child->comment}}&raquo;</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -106,16 +107,16 @@
         <script>
             $('.icon--reply').click(function () {
                 var commentId = $(this).parents('.js-item').attr('data-comment-id');
-                $("input[name='comment_parent_id']").val(commentId);
+                $("input[name='parent_id']").val(commentId);
                 $('html, body').animate({
                     scrollTop: $("#comment_message").offset().top
                 }, 1000);
             })
         </script>
         <form class="comments__form form" method="post" style="margin-top: 20px;" action="addComment">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <input type="hidden" name="action" value="add_comment"/>
-            <input type="hidden" name="parent_id" value="0"/>
+            <input type="hidden" class="field" name="_token" value="{{ csrf_token() }}">
+            <input type="hidden" class="field" name="action" value="add_comment"/>
+            <input type="hidden" class="field" name="parent_id" value="0"/>
             <div class="message-success is-hidden">
                 Thank you! Your comment has been submitted for review.
             </div>
@@ -123,25 +124,28 @@
             <div class="form__group">
                 <label for="user_name" class="label">Your name *</label>
                 <div class="form__hold">
-                    <input type="text" id="user_name" @auth value="{{ Auth::user()->name }}" @endauth required name="user_name" maxlength="30" class="field" placeholder="please enter name to make your comment personalized"/>
+                    <input type="text" id="user_name" @auth value="{{ Auth::user()->name }}" @endauth required name="user_name" maxlength="30" class="field required" placeholder="please enter name to make your comment personalized"/>
+                    <div class="errorTextName" data-text="field is required"></div>
                 </div>
             </div>
             <div class="form__group">
                 <label for="email" class="label">Your email *</label>
                 <div class="form__hold">
-                    <input type="email" id="email" @auth value="{{ Auth::user()->email }}" @endauth required name="email" maxlength="30" class="field" placeholder="please enter email"/>
+                    <input type="email" id="email" @auth value="{{ Auth::user()->email }}" @endauth required name="email" maxlength="30" class="field required" placeholder="please enter email"/>
+                    <div class="errorTextEmail" data-text="field is required"></div>
                 </div>
             </div>
             <div class="form__group">
                 <label for="page_url" class="label">Your home page</label>
                 <div class="form__hold">
-                    <input type="url" id="page_url" name="page_url" maxlength="30" class="field" placeholder="please enter your home page"/>
+                    <input type="url" id="page_url" name="page_url" maxlength="30" class="field url" placeholder="please enter your home page"/>
+                    <div class="errorTextUrl" data-text="field is required"></div>
                 </div>
             </div>
             <div class="form__group">
                 <label for="comment_message" class="label">Comment message:</label>
                 <div class="form__hold">
-                    <textarea id="comment_message" required name="comment" class="field field--area" placeholder="Add your comment"></textarea>
+                    <textarea id="comment_message" required name="comment" class="field field--area required" placeholder="Add your comment"></textarea>
                     <div class="validate validate--error"></div>
                 </div>
             </div>
@@ -152,19 +156,21 @@
                     <div class="captcha__action">
                         <label for="comments_code" class="label is-required">Security code</label>
                         <div class="form__hold">
-                            <input type="text" id="comments_code" class="field" name="code" placeholder="Security code" autocomplete="off">
+                            <input type="text" id="comments_code" class="field required" name="code" placeholder="Security code" autocomplete="off">
+                            <div class="errorTextCaptcha" data-text="field is required"></div>
                             <div class="validate validate--error"></div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="errorText" data-text="field is required"></div>
+            <div class="successText"></div>
             <div class="form__group">
-                <button class="btn btn--primary">
+                <button class="btn btn--primary js__submitForm" onclick="formSend.send(this, event)">
                     <span class="btn__text">Post Comment</span>
                 </button>
             </div>
         </form>
-
     </div>
 </div>
 </body>

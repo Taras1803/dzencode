@@ -49,3 +49,54 @@ html, body {
 .m-b-md {
     margin-bottom: 30px;
 }
+.is-error{
+    border-bottom-color:red;
+    -webkit-transition:.3s;
+    transition:.3s
+}
+.errorText{
+    font-weight: bold;
+    font-size:14px;
+    width:100%;
+    display:none;
+    color:red;
+    padding:0 8px;
+    margin:5px 0
+}
+.errorTextName{
+     font-size:14px;
+     width:100%;
+     display:none;
+     color:red;
+     padding:0 8px;
+     margin:5px 0
+ }
+.errorTextEmail{
+    font-size:14px;
+    width:100%;
+    display:none;
+    color:red;
+    padding:0 8px;
+    margin:5px 0
+}
+.errorTextUrl{
+     font-size:14px;
+     width:100%;
+     display:none;
+     color:red;
+     padding:0 8px;
+     margin:5px 0
+ }
+.errorTextCaptcha{
+    font-size:14px;
+    width:100%;
+    display:none;
+    color:red;
+    padding:0 8px;
+    margin:5px 0
+}
+.successText{
+    color: #0bbd88;
+    font-size:14px;
+    font-weight: bold;
+}

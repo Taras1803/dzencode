@@ -17,8 +17,8 @@ class CommentController extends Controller
 
     public function addComment(Request $request)
     {
-        Comment::add($request);
-        return back();
+        $json = Comment::add($request);
+        return response()->json($json);
     }
 
 }

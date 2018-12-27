@@ -10,7 +10,7 @@ class Helper extends Model
 {
     static function get_time_passed($date)
     {
-        $date = new DateTime($date, new DateTimeZone('Europe/Kiev'));
+        $date = new DateTime($date);
         $interval = time() - $date->getTimestamp();
 
         if ($interval < 0) {
